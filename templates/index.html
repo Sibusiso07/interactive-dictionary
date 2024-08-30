@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Dictionary</title>
+    <!-- Add Google Fonts for better typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Use a simple, minimalist CSS framework like Mini.css for a clean look -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mini.css/3.0.1/mini-default.min.css">
+    <!-- Add custom styles for centering and responsive design -->
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f2f2f2;
+        }
+
+        main {
+            width: 90%;
+            max-width: 600px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        header {
+            margin-bottom: 20px;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        p, h2 {
+            text-align: left;
+        }
+
+        @media (max-width: 480px) {
+            main {
+                width: 95%;
+            }
+
+            input[type="text"], button {
+                width: 100%;
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <header>
+            <h1>Interactive Dictionary</h1>
+        </header>
+        <form method="post">
+            <input type="text" name="word" placeholder="Enter a word" required>
+            <button type="submit">Search</button>
+        </form>
+
+        {% if data %}
+            <h2>Word: {{ data['word'] }}</h2>
+            <p><strong>Part of Speech:</strong> {{ data['meanings'][0]['partOfSpeech'] }}</p>
+            <p><strong>Definition:</strong> {{ data['meanings'][0]['definitions'][0]['definition'] }}</p>
+            {% if data['phonetics'] and data['phonetics'][0]['audio'] %}
+                <p><strong>Pronunciation:</strong> <a href="{{ data['phonetics'][0]['audio'] }}" target="_blank">Listen</a></p>
+            {% endif %}
+            {% if data['meanings'][0]['definitions'][0]['example'] %}
+                <p><strong>Example:</strong> {{ data['meanings'][0]['definitions'][0]['example'] }}</p>
+            {% endif %}
+        {% elif error %}
+            <p>{{ error }}</p>
+        {% endif %}
+    </main>
+</body>
+</html>
